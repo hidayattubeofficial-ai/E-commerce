@@ -1,4 +1,4 @@
-import products from "../../data/products.json";
+import products from "../../../data/products.json";
 
 export async function onRequestGet() {
   return new Response(JSON.stringify({
