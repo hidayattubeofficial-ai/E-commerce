@@ -1,0 +1,8 @@
+{
+  "name": "fm-ecommerce",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/catalog.test.js"
+  }
+}
