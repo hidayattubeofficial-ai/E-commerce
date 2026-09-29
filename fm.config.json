@@ -1,0 +1,19 @@
+{
+  "name": "FM E-commerce",
+  "brand": "FM",
+  "mode": "foundation",
+  "approvalGate": true,
+  "deploy": false,
+  "commands": {
+    "FM:INIT": "initialize",
+    "FM:UI": "storefront",
+    "FM:CMS": "cms",
+    "FM:SHOP": "commerce",
+    "FM:SELL": "seller",
+    "FM:AI": "ai",
+    "FM:TEST": "test",
+    "FM:FIX": "fix",
+    "FM:BUILD": "build",
+    "FM:DEPLOY": "approval-required"
+  }
+}
