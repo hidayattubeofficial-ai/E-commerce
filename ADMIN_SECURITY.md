@@ -2,7 +2,8 @@
 
 - Static admin pages: enabled
 - Read-only admin APIs: enabled
-- Authentication: not enabled yet
+- Authentication boundary page: enabled
+- Authentication provider: not configured
 - Write operations: disabled
 - Payment processing: disabled
 - Production deployment: disabled
@@ -12,8 +13,10 @@
 No credentials, API keys, payment secrets, or write-capable endpoints belong in browser code.
 
 ## Next security phase
-1. Authentication/access layer.
-2. Server-side identity validation.
-3. Role checks before writes.
-4. Audit logging.
-5. Approval gate before production changes.
+1. Configure an external/server-side authentication or access provider.
+2. Validate identity server-side.
+3. Add role checks before writes.
+4. Add audit logging.
+5. Keep production publishing approval-gated.
+
+The current auth page is deliberately non-functional: it does not collect credentials and does not claim authentication is active.
