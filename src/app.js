@@ -1,21 +1,36 @@
 let catalog = [];
-let cart = JSON.parse(localStorage.getItem("fm-cart") || "[]");
+let cart = loadCart();
 
 const money = (n, c = "PKR") => c + " " + Number(n).toLocaleString();
+
+function loadCart() {
+  try {
+    const value = JSON.parse(localStorage.getItem("fm-cart") || "[]");
+    return Array.isArray(value) ? value.filter(item => item && item.id && Number(item.qty) > 0) : [];
+  } catch {
+    return [];
+  }
+}
 
 function saveCart() {
   localStorage.setItem("fm-cart", JSON.stringify(cart));
   renderCart();
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[char]));
+}
+
 function renderCart() {
   const root = document.querySelector("#cart-items");
   const total = document.querySelector("#cart-total");
   if (!root || !total) return;
-  const totalValue = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const totalValue = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
   total.textContent = money(totalValue);
   root.innerHTML = cart.length
-    ? cart.map(item => '<article class="card"><h3>' + item.name + '</h3><p>' + money(item.price, item.currency) + ' × <strong>' + item.qty + '</strong></p><div class="quantity-controls"><button type="button" data-dec="' + item.id + '" aria-label="Decrease ' + item.name + ' quantity">−</button><span>' + item.qty + '</span><button type="button" data-inc="' + item.id + '" aria-label="Increase ' + item.name + ' quantity">+</button><button type="button" data-remove="' + item.id + '">Remove</button></div></article>').join("")
+    ? cart.map(item => '<article class="card"><h3>' + escapeHtml(item.name) + '</h3><p>' + money(item.price, item.currency) + ' × <strong>' + Number(item.qty) + '</strong></p><div class="quantity-controls"><button type="button" data-dec="' + escapeHtml(item.id) + '" aria-label="Decrease ' + escapeHtml(item.name) + ' quantity">−</button><span>' + Number(item.qty) + '</span><button type="button" data-inc="' + escapeHtml(item.id) + '" aria-label="Increase ' + escapeHtml(item.name) + ' quantity">+</button><button type="button" data-remove="' + escapeHtml(item.id) + '">Remove</button></div></article>').join("")
     : "<p>Your cart is empty.</p>";
 
   root.querySelectorAll("[data-dec]").forEach(button => button.addEventListener("click", () => changeQty(button.dataset.dec, -1)));
@@ -29,7 +44,7 @@ function renderCart() {
 function changeQty(id, delta) {
   const item = cart.find(entry => entry.id === id);
   if (!item) return;
-  item.qty = Math.max(0, Math.min(item.qty + delta, Number(item.stock) || 0));
+  item.qty = Math.max(0, Math.min(Number(item.qty) + delta, Number(item.stock) || 0));
   if (item.qty === 0) cart = cart.filter(entry => entry.id !== id);
   saveCart();
 }
@@ -37,7 +52,7 @@ function changeQty(id, delta) {
 function addToCart(product) {
   if (!product || Number(product.stock) < 1) return;
   const found = cart.find(item => item.id === product.id);
-  if (found) found.qty = Math.min(found.qty + 1, Number(product.stock));
+  if (found) found.qty = Math.min(Number(found.qty) + 1, Number(product.stock));
   else cart.push({ ...product, qty: 1 });
   saveCart();
 }
@@ -45,16 +60,16 @@ function addToCart(product) {
 function renderCatalog() {
   const root = document.querySelector("#product-grid");
   if (!root) return;
-  const query = (document.querySelector("#search")?.value || "").toLowerCase();
+  const query = (document.querySelector("#search")?.value || "").trim().toLowerCase();
   const category = document.querySelector("#category")?.value || "";
   const items = catalog.filter(product =>
     (!category || product.category === category) &&
-    (!query || [product.name, product.category, product.slug].join(" ").toLowerCase().includes(query))
+    (!query || [product.name, product.category, product.slug].filter(Boolean).join(" ").toLowerCase().includes(query))
   );
   root.innerHTML = items.map(product =>
-    '<article class="card"><h3>' + product.name + '</h3><p class="muted">' +
-    product.category + ' · Stock ' + product.stock + '</p><p class="price">' +
-    money(product.price, product.currency) + '</p><button data-add="' + product.id + '" ' +
+    '<article class="card"><h3>' + escapeHtml(product.name) + '</h3><p class="muted">' +
+    escapeHtml(product.category) + ' · Stock ' + Number(product.stock) + '</p><p class="price">' +
+    money(product.price, product.currency) + '</p><button data-add="' + escapeHtml(product.id) + '" ' +
     (Number(product.stock) < 1 ? "disabled" : "") + '>Add to cart</button></article>'
   ).join("") || "<p>No matching products.</p>";
   root.querySelectorAll("[data-add]").forEach(button => {
@@ -65,15 +80,18 @@ function renderCatalog() {
 async function load() {
   const root = document.querySelector("#product-grid");
   if (!root) return;
+  root.setAttribute("aria-busy", "true");
   root.textContent = "Loading…";
   try {
     const response = await fetch("/api/products", { headers: { Accept: "application/json" } });
     if (!response.ok) throw new Error("API " + response.status);
     const data = await response.json();
-    if (!Array.isArray(data)) throw new Error("Invalid catalog");
-    catalog = data.filter(product => product && product.active !== false);
+    if (!data || data.ok !== true || !Array.isArray(data.products)) throw new Error("Invalid catalog");
+    catalog = data.products.filter(product => product && product.active === true);
     const select = document.querySelector("#category");
-    const categories = [...new Set(catalog.map(product => product.category).filter(Boolean))].sort();
+    const categories = Array.isArray(data.categories)
+      ? data.categories
+      : [...new Set(catalog.map(product => product.category).filter(Boolean))].sort();
     if (select) {
       select.innerHTML = '<option value="">All categories</option>';
       categories.forEach(category => {
@@ -85,7 +103,9 @@ async function load() {
     }
     renderCatalog();
   } catch {
-    root.textContent = "Catalog unavailable. Check the store API.";
+    root.textContent = "Catalog unavailable. Check the store API and try Refresh.";
+  } finally {
+    root.setAttribute("aria-busy", "false");
   }
 }
 
