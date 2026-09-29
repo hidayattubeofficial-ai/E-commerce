@@ -5,57 +5,71 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="FM E-commerce admin settings">
   <title>FM E-commerce — Settings</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.5;
-    }
-    body { margin: 0; padding: 2rem; }
-    main { max-width: 900px; margin: 0 auto; }
-    .urdu {
-      font-family: "Noto Nastaliq Urdu", serif;
-      direction: rtl;
-      text-align: right;
-      line-height: 2.2;
-    }
-    .font-preview {
-      margin: 1rem 0 2rem;
-      padding: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-    }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <header>
+    <strong>FM E-commerce Admin</strong>
+    <nav aria-label="Admin navigation">
+      <a href="/admin/products.html">Products</a>
+      <a href="/admin/inventory.html">Inventory</a>
+      <a href="/admin/orders.html">Orders</a>
+      <a href="/admin/settings.html" aria-current="page">Settings</a>
+      <a href="/">Storefront</a>
+    </nav>
+  </header>
+
   <main>
-    <h1>FM E-commerce Settings</h1>
-    <p>Protected admin settings surface. Configuration writes remain approval-gated.</p>
-
-    <section class="font-preview" aria-label="Font preview">
-      <h2>Font implementation</h2>
-      <p>English UI: <strong>Inter</strong></p>
-      <p class="urdu" lang="ur">اردو UI: نوٹو نستعلیق اردو — یہ فونٹ اردو متن کے لیے استعمال ہوگا۔</p>
-      <p><small>Urdu direction: RTL · Latin UI: LTR</small></p>
+    <section class="hero">
+      <p class="eyebrow">FM ADMIN • SETTINGS</p>
+      <h1>Settings</h1>
+      <p>Protected configuration surface. Configuration writes remain approval-gated.</p>
     </section>
 
     <section>
-      <h2>Settings modules</h2>
-      <ul>
-        <li>General</li><li>Store</li><li>Catalog</li><li>Orders</li><li>Customers</li>
-        <li>Sellers</li><li>Payments</li><li>Shipping</li><li>Tax</li><li>AI</li>
-        <li>Security</li><li>Notifications</li><li>Analytics</li><li>Deployment</li><li>Backup &amp; Audit</li>
-      </ul>
+      <div class="section-head"><h2>Font implementation</h2><span class="muted">UI typography</span></div>
+      <div class="admin-panel">
+        <div class="admin-card">
+          <strong>English UI — Inter</strong>
+          <span>Weights 400, 500, 600 and 700.</span>
+        </div>
+        <div class="admin-card">
+          <strong class="urdu" lang="ur">اردو UI — نوٹو نستعلیق اردو</strong>
+          <span class="urdu" lang="ur">اردو متن کے لیے RTL اور نستعلیق فونٹ فعال ہے۔</span>
+        </div>
+      </div>
     </section>
 
     <section>
-      <h2>Safety state</h2>
-      <p>Production deployment: OFF</p>
-      <p>Automatic public publishing: OFF</p>
-      <p>Human approval gate: ON</p>
+      <div class="section-head"><h2>Settings modules</h2><span class="muted">Foundation</span></div>
+      <div class="admin-grid">
+        <div class="admin-card"><strong>General</strong><span>Core application settings</span></div>
+        <div class="admin-card"><strong>Store</strong><span>Store identity and storefront behavior</span></div>
+        <div class="admin-card"><strong>Catalog</strong><span>Products, categories and inventory rules</span></div>
+        <div class="admin-card"><strong>Orders</strong><span>Order lifecycle configuration</span></div>
+        <div class="admin-card"><strong>Customers</strong><span>Customer account settings</span></div>
+        <div class="admin-card"><strong>Sellers</strong><span>Seller and marketplace controls</span></div>
+        <div class="admin-card"><strong>Payments</strong><span>Integration points only; processing OFF</span></div>
+        <div class="admin-card"><strong>Shipping</strong><span>Shipping configuration foundation</span></div>
+        <div class="admin-card"><strong>Tax</strong><span>Tax configuration foundation</span></div>
+        <div class="admin-card"><strong>AI</strong><span>AI planning and automation controls</span></div>
+        <div class="admin-card"><strong>Security</strong><span>Access, roles and audit controls</span></div>
+        <div class="admin-card"><strong>Notifications</strong><span>Notification configuration foundation</span></div>
+        <div class="admin-card"><strong>Analytics</strong><span>Analytics configuration foundation</span></div>
+        <div class="admin-card"><strong>Deployment</strong><span>Production deployment remains OFF</span></div>
+        <div class="admin-card"><strong>Backup &amp; Audit</strong><span>Audit and backup foundation</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>Safety state</h2><span class="muted">Locked</span></div>
+      <div class="admin-grid">
+        <div class="admin-card"><strong>Production deployment</strong><span>OFF — approval required</span></div>
+        <div class="admin-card"><strong>Automatic public publishing</strong><span>OFF</span></div>
+        <div class="admin-card"><strong>Human approval gate</strong><span>ON</span></div>
+        <div class="admin-card"><strong>Payment processing</strong><span>OFF</span></div>
+        <div class="admin-card"><strong>Admin writes</strong><span>OFF until authorization and audit controls are ready</span></div>
+      </div>
     </section>
   </main>
 </body>
