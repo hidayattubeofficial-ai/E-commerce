@@ -1,4 +1,6 @@
 name = "fm-ecommerce"
 compatibility_date = "2026-09-29"
 pages_build_output_dir = "src"
-# Production deployment remains OFF; this file only defines the future Cloudflare target.
+
+# Production deployment remains OFF.
+# Add protected Cloudflare bindings only after human approval.
