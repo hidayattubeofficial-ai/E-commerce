@@ -1,0 +1,65 @@
+name: FM E-commerce Automation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      cmd:
+        description: "FM short command"
+        required: false
+        default: "FM:TEST"
+        type: string
+      ai:
+        description: "Use AI planning when OPENAI_API_KEY is configured"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fm-automation-main
+  cancel-in-progress: true
+
+jobs:
+  auto:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Run FM command
+        env:
+          FM_CMD: ${{ inputs.cmd || 'FM:TEST' }}
+        run: |
+          chmod +x scripts/fm.sh
+          ./scripts/fm.sh "$FM_CMD"
+
+      - name: AI plan
+        if: ${{ inputs.ai == true && secrets.OPENAI_API_KEY != '' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FM_CMD: ${{ inputs.cmd || 'FM:TEST' }}
+        run: |
+          node scripts/fm-ai.mjs "$FM_CMD"
+
+      - name: Fast validation
+        run: |
+          node --check scripts/fm-ai.mjs
+          test -f README.md
+          test -f fm.config.json
+
+      - name: Commit automation state
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          git config user.name "FM Automation"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
