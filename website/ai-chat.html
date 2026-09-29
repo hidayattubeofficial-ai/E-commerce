@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FM AI Assistant</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{margin:0;background:#f5f8f6;color:#173326}
+.fm-ai{max-width:680px;margin:32px auto;padding:20px;background:#fff;border:1px solid #dbe7df;border-radius:18px;box-shadow:0 8px 30px #17332612}
+h1{margin:0 0 6px;font-size:24px}.sub{margin:0 0 18px;color:#60756a}#messages{min-height:220px;max-height:420px;overflow:auto;padding:8px}
+.msg{margin:10px 0;padding:11px 14px;border-radius:14px;white-space:pre-wrap}.user{background:#e6f2eb;margin-left:15%}.ai{background:#f2f4f3;margin-right:15%}
+form{display:flex;gap:8px;margin-top:12px}input{flex:1;padding:13px;border:1px solid #c9d8cf;border-radius:12px;font-size:16px}
+button{border:0;border-radius:12px;padding:0 18px;font-weight:700;cursor:pointer;background:#17633e;color:#fff}button:disabled{opacity:.6;cursor:wait}.note{font-size:12px;color:#72847b;margin-top:10px}
+</style></head>
+<body><section class="fm-ai" aria-label="FM AI Assistant">
+<h1>FM AI Assistant</h1><p class="sub">Ask about products, comparisons and marketplace help.</p>
+<div id="messages" aria-live="polite"></div>
+<form id="chat"><input id="message" maxlength="4000" autocomplete="off" placeholder="Ask FM AI…" required><button id="send" type="submit">Send</button></form>
+<div class="note">AI answers are informational. Live stock, price and order data are shown only when connected to store data.</div>
+</section>
+<script>
+const FM_AI_ENDPOINT=window.FM_AI_ENDPOINT||"/ai";
+const messages=document.querySelector("#messages"),input=document.querySelector("#message"),send=document.querySelector("#send");
+function add(text,role){const el=document.createElement("div");el.className="msg "+role;el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight;}
+document.querySelector("#chat").addEventListener("submit",async(event)=>{
+event.preventDefault();const message=input.value.trim();if(!message)return;add(message,"user");input.value="";send.disabled=true;
+try{const response=await fetch(FM_AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});
+const data=await response.json().catch(()=>({}));if(!response.ok||!data.ok)throw new Error(data.error||"AI service unavailable.");add(data.reply||"No response returned.","ai");
+}catch(error){add("FM AI is temporarily unavailable. Please try again later.","ai");}finally{send.disabled=false;input.focus();}
+});
+</script></body></html>
