@@ -1,10 +1,15 @@
-export async function onRequestGet() {
+export async function onRequestGet(context) {
+  const hasAiKey = Boolean(context.env?.OPENAI_API_KEY);
   return Response.json({
     ok: true,
     service: "FM E-commerce",
-    ai: Boolean(globalThis?.process) ? false : "configured-by-runtime",
     catalog: "data/products.json",
+    catalogActiveCount: "server-runtime",
+    aiConfigured: hasAiKey,
     productionDeployment: false,
-    approvalGate: true
-  }, { headers: { "cache-control": "no-store" } });
+    approvalGate: true,
+    paymentProcessing: false,
+    orderMutations: false,
+    sellerPayouts: false
+  }, { headers: { "cache-control": "no-store", "x-content-type-options": "nosniff" } });
 }
