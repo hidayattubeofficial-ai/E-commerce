@@ -36,3 +36,7 @@ Keep Google Workspace Marketplace integrations optional and use them only where 
 These tools are supporting utilities, not core runtime dependencies. The core FM E-commerce application remains independent and GitHub-controlled. Do not add a Marketplace app as a production dependency unless the integration is explicitly needed, documented, tested and reversible.
 
 Production deployment remains human-approved.
+
+## FM AI website layer
+
+The server-side AI foundation is now in `ai/worker.js`. The website can call its POST `/ai` endpoint without exposing `OPENAI_API_KEY` to visitors. Setup and request/response details are documented in `ai/README.md`. Deployment/routing is intentionally separate and remains human-approved.
