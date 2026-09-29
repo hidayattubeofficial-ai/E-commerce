@@ -1,31 +1,28 @@
-# FM E-commerce — actual EmDash application scaffold
+# FM E-commerce — EmDash application
 
-This is the isolated EmDash + Astro + Cloudflare application boundary.
+Isolated EmDash + Astro + Cloudflare application boundary.
 
-Upstream basis: EmDash starter Cloudflare template, adapted for FM commerce.
+## Implemented
 
-## Stack
+- Astro server application
+- EmDash integration with live collection loader
+- Cloudflare Worker adapter
+- D1 binding
+- R2 media binding
+- FM product collection seed
+- Read-only adapter from existing `data/products.json`
+- Product list and detail routes
+- Catalog bridge test
 
-- Astro
-- EmDash CMS
-- Cloudflare Workers
-- D1
-- R2
-- FM product collection
+## Boundary
+
+The adapter is intentionally read-only. It does not mutate the existing catalog and does not publish products automatically.
 
 ## Safety
 
 - Production deployment: OFF
 - Automatic public publishing: OFF
 - Human approval: ON
-- Product seed starts as draft content
+- Checkout/payment/order mutations: OFF
 
-## Admin
-
-After local setup, EmDash admin is available at:
-
-`/_emdash/admin`
-
-## Next integration
-
-The existing FM storefront/API remains outside this directory. The next migration step is an explicit adapter between `data/products.json` and the EmDash `products` collection; no production data is migrated automatically.
+The existing FM storefront/API remains untouched.
