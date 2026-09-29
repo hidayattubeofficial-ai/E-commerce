@@ -37,6 +37,10 @@ These tools are supporting utilities, not core runtime dependencies. The core FM
 
 Production deployment remains human-approved.
 
+## Storefront AI status
+
+FM AI is now wired into the storefront at `/api/ai`. It receives the active catalog from `data/products.json` server-side and answers customer questions using that catalog. The storefront contains the customer chat UI; the API key remains a server-side Cloudflare Pages secret. Payment, checkout, real order mutations, seller payouts and production deployment are intentionally not activated until their respective integrations are configured and human-approved.
+
 ## FM AI website layer
 
 The server-side AI foundation is now in `ai/worker.js`. The website can call its POST `/ai` endpoint without exposing `OPENAI_API_KEY` to visitors. Setup and request/response details are documented in `ai/README.md`. Deployment/routing is intentionally separate and remains human-approved.
