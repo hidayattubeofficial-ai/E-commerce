@@ -1,0 +1,28 @@
+---
+import { getFmCatalog } from "../../utils/fm-catalog";
+
+const products = getFmCatalog().filter((product) => product.active);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>FM E-commerce Products</title>
+  </head>
+  <body>
+    <main>
+      <h1>FM Products</h1>
+      <p>Read-only catalog bridge. EmDash remains the CMS source of editorial content.</p>
+      <ul>
+        {products.map((product) => (
+          <li>
+            <a href={"/products/" + product.slug}>
+              <strong>{product.name}</strong>
+            </a>
+            <span> — {product.price} {product.currency} · stock {product.stock}</span>
+          </li>
+        ))}
+      </ul>
+    </main>
+  </body>
+</html>
