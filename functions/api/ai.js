@@ -31,7 +31,7 @@ export async function onRequestPost(context) {
       "Authorization": `Bearer ${context.env.OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-      model: context.env.OPENAI_MODEL || "gpt-5.6-mini",
+      model: context.env.OPENAI_MODEL || "gpt-5.6-luna",
       instructions: instructions,
       input: message + "\n\nLIVE FM CATALOG:\n" + JSON.stringify(catalog),
       max_output_tokens: 600
