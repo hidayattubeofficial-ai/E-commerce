@@ -1,0 +1,36 @@
+name: EmDash Foundation Check
+
+on:
+  push:
+    paths:
+      - "emdash/app/**"
+      - "data/products.json"
+      - ".github/workflows/emdash-check.yml"
+  pull_request:
+    paths:
+      - "emdash/app/**"
+      - "data/products.json"
+
+permissions:
+  contents: read
+
+jobs:
+  foundation-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: emdash/app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: emdash/app/package.json
+      - name: Verify FM catalog bridge
+        run: node tests/catalog-bridge.test.mjs
+      - name: Verify scaffold configuration
+        run: node -e "const p=require('./package.json'); if(!p.emdash || !p.emdash.seed) process.exit(1); console.log('EmDash config OK')"
+
+# Deliberately no deployment step.
+# Production deployment remains human-approved and OFF.
