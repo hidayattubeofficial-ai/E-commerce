@@ -29,6 +29,8 @@ jobs:
         run: npm install
       - name: Verify FM catalog bridge
         run: node tests/catalog-bridge.test.mjs
+      - name: Verify FM Commerce plugin contract
+        run: node tests/fm-commerce-plugin.test.mjs
       - name: Typecheck Astro + EmDash
         run: npm run typecheck
       - name: Build Astro + Cloudflare worker
