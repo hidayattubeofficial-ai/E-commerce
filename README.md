@@ -1,46 +1,54 @@
 # FM E-commerce
 
-New standalone FM marketplace project.
+Standalone FM marketplace foundation.
+
+## Current implementation
+
+- Responsive storefront with catalog search/filter
+- Local cart with stock-limited quantity controls
+- Server-side catalog API
+- Server-side FM AI shopping assistant
+- Read-only admin Products, Inventory and Orders surfaces
+- Health endpoint
+- Security response headers
+- Automated catalog, API-contract and safety-gate tests
+- GitHub Actions CI
+- Human approval gate
 
 ## Automation
 
 GitHub Actions runs the FM short-code automation system.
 
-Use Actions → **FM E-commerce Automation** → Run workflow.
-
 Short commands:
 
 `FM:INIT` · `FM:UI` · `FM:CMS` · `FM:SHOP` · `FM:SELL` · `FM:AI` · `FM:TEST` · `FM:FIX` · `FM:BUILD` · `FM:DEPLOY`
 
-AI planning is enabled when the repository secret `OPENAI_API_KEY` exists. Without it, the workflow stays in fast local validation mode.
+AI planning can use the repository secret `OPENAI_API_KEY`; secrets remain server-side.
 
-Production deployment is intentionally disabled until human approval.
+## Production gate
 
-## Goal
+Production deployment is **OFF** and requires explicit human approval.
 
-Build an independent FM marketplace using reusable open-source foundations, with storefront, CMS, commerce, seller tools, AI automation, testing and Cloudflare-ready deployment.
+The following are intentionally inactive until their real integrations are configured, tested and approved:
 
-## Recommended workspace tooling
+- Payment processing
+- Real order creation/mutations
+- Customer accounts
+- Seller onboarding and payouts
+- Shipping integrations
+- Tax integrations
+- Automated public publishing
 
-Keep Google Workspace Marketplace integrations optional and use them only where they reduce real work.
+No storefront code should bypass these gates.
 
-- **Canva** — brand assets, banners and presentation/design work.
-- **Google Colab** — isolated Python/AI experiments and data processing.
-- **draw.io** — architecture, ERD and workflow diagrams.
-- **CloudConvert** — media/document format conversion when required.
-- **Photopea** — PSD/XCF and browser-based image editing.
-- **GPT Workspace** — optional Google Workspace AI assistance.
+## Supporting workspace tools
 
-### Integration rule
+Optional tools such as Canva, Google Colab, draw.io, CloudConvert, Photopea and GPT Workspace remain supporting utilities rather than core runtime dependencies.
 
-These tools are supporting utilities, not core runtime dependencies. The core FM E-commerce application remains independent and GitHub-controlled. Do not add a Marketplace app as a production dependency unless the integration is explicitly needed, documented, tested and reversible.
+## FM AI
 
-Production deployment remains human-approved.
+The storefront calls `/api/ai`. The API reads the active catalog server-side and keeps the OpenAI API key out of the browser. AI responses must not invent catalog, order, payment, seller, shipping or delivery facts.
 
-## Storefront AI status
+## Readiness
 
-FM AI is now wired into the storefront at `/api/ai`. It receives the active catalog from `data/products.json` server-side and answers customer questions using that catalog. The storefront contains the customer chat UI; the API key remains a server-side Cloudflare Pages secret. Payment, checkout, real order mutations, seller payouts and production deployment are intentionally not activated until their respective integrations are configured and human-approved.
-
-## FM AI website layer
-
-The server-side AI foundation is now in `ai/worker.js`. The website can call its POST `/ai` endpoint without exposing `OPENAI_API_KEY` to visitors. Setup and request/response details are documented in `ai/README.md`. Deployment/routing is intentionally separate and remains human-approved.
+The implementation foundation is complete and documented in `docs/PRODUCTION_READINESS.md`. Production commerce is a separate integration phase and is not represented as complete until the required external services, storage, security controls, testing and approval are in place.
