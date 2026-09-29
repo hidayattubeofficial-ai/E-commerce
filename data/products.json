@@ -1,0 +1,4 @@
+[
+  {"id":"fm-001","slug":"classic-watch","name":"Classic Watch","category":"Watches","price":12999,"currency":"PKR","stock":10,"active":true},
+  {"id":"fm-002","slug":"premium-gift-box","name":"Premium Gift Box","category":"Gifts","price":4999,"currency":"PKR","stock":25,"active":true}
+]
