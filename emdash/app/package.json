@@ -2,7 +2,9 @@
   "name": "fm-ecommerce-emdash",
   "private": true,
   "type": "module",
-  "emdash": { "seed": "seed/seed.json" },
+  "emdash": {
+    "seed": "seed/seed.json"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -11,17 +13,18 @@
     "typecheck": "astro check"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.7",
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/react": "^5.0.0",
     "@emdash-cms/cloudflare": "^0.31.1",
-    "astro": "^6.0.0",
+    "astro": "^6.0.1",
     "emdash": "^0.31.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "@astrojs/check": "^0.9.7"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
-    "@cloudflare/workers-types": "^4.2026.1",
-    "wrangler": "^4.0.0"
+    "@cloudflare/workers-types": "^5.20260929.1",
+    "wrangler": "^4.143.0"
   }
 }
