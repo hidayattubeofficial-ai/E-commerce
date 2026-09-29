@@ -1,0 +1,29 @@
+---
+import { getFmCatalog, getFmProduct } from "../../utils/fm-catalog";
+
+const slug = Astro.params.slug ?? "";
+const product = getFmProduct(slug);
+
+if (!product || !product.active) {
+  return Astro.redirect("/products");
+}
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{product.name} — FM E-commerce</title>
+    <meta name="description" content={product.name} />
+  </head>
+  <body>
+    <main>
+      <p><a href="/products">← Products</a></p>
+      <h1>{product.name}</h1>
+      <p>Category: {product.category}</p>
+      <p>Price: {product.price} {product.currency}</p>
+      <p>Stock: {product.stock}</p>
+      <p>Product ID: {product.id}</p>
+      <p>Checkout is approval-gated and not enabled in this migration stage.</p>
+    </main>
+  </body>
+</html>
