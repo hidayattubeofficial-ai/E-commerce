@@ -1,0 +1,65 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "FM E-commerce",
+    "description": "FM commerce content model on EmDash",
+    "author": "FM"
+  },
+  "settings": {
+    "title": "FM E-commerce",
+    "tagline": "FM marketplace foundation"
+  },
+  "collections": [
+    {
+      "slug": "products",
+      "label": "Products",
+      "labelSingular": "Product",
+      "urlPattern": "/products/{slug}",
+      "supports": ["drafts", "revisions", "preview", "search", "seo"],
+      "fields": [
+        {"slug":"name","label":"Name","type":"string","required":true,"searchable":true},
+        {"slug":"slug","label":"Slug","type":"string","required":true,"searchable":true},
+        {"slug":"category","label":"Category","type":"string","searchable":true},
+        {"slug":"price","label":"Price","type":"number","required":true},
+        {"slug":"currency","label":"Currency","type":"string","required":true},
+        {"slug":"stock","label":"Stock","type":"number","required":true},
+        {"slug":"active","label":"Active","type":"boolean","required":true},
+        {"slug":"featured_image","label":"Featured Image","type":"image"},
+        {"slug":"description","label":"Description","type":"portableText"}
+      ]
+    }
+  ],
+  "content": {
+    "products": [
+      {
+        "id": "fm-001",
+        "slug": "classic-watch",
+        "status": "draft",
+        "data": {
+          "name": "Classic Watch",
+          "slug": "classic-watch",
+          "category": "Watches",
+          "price": 12999,
+          "currency": "PKR",
+          "stock": 10,
+          "active": true
+        }
+      },
+      {
+        "id": "fm-002",
+        "slug": "premium-gift-box",
+        "status": "draft",
+        "data": {
+          "name": "Premium Gift Box",
+          "slug": "premium-gift-box",
+          "category": "Gifts",
+          "price": 4999,
+          "currency": "PKR",
+          "stock": 25,
+          "active": true
+        }
+      }
+    ]
+  }
+}
