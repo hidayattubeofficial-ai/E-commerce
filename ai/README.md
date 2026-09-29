@@ -38,3 +38,14 @@ The storefront should call the deployed Worker endpoint with POST JSON and rende
 The API key must never be added to HTML, JavaScript bundles, localStorage, or public repository files.
 
 Production deployment is intentionally separate from this code addition and remains human-approved.
+
+
+## Live catalog connection
+
+Set the optional Worker variable `CATALOG_URL` to a trusted HTTPS JSON endpoint owned by the FM marketplace. The Worker fetches the catalog server-side and supplies up to 100 products to FM AI.
+
+Supported JSON shapes:
+- Array of products: `[{ "name": "...", "price": 0, "stock": 0 }]`
+- Object: `{ "products": [{ "name": "...", "price": 0, "stock": 0 }] }`
+
+Keep the catalog endpoint server-controlled and do not put credentials in the storefront. The AI only treats data returned by this endpoint as live catalog information.
