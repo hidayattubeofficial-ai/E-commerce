@@ -16,3 +16,5 @@ case "$cmd" in
   FM:DEPLOY) echo "FM DEPLOY → approval gate only; deployment is disabled";;
   *) echo "Unknown FM command: $cmd"; exit 2;;
 esac
+
+echo "Safety: production deployment OFF; automatic public publishing OFF; human approval ON"
