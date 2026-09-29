@@ -1,0 +1,15 @@
+# WordPress secrets / runtime
+wp-config.php
+*.sql
+*.sql.gz
+.env
+.env.*
+!/.env.example
+
+# Runtime uploads/cache
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+
+# Local development
+.DS_Store
