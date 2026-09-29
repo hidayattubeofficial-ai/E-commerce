@@ -15,26 +15,36 @@ function renderCart() {
   const totalValue = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   total.textContent = money(totalValue);
   root.innerHTML = cart.length
-    ? cart.map(item => '<article class="card"><h3>' + item.name + '</h3><p>' + money(item.price, item.currency) + ' × <strong>' + item.qty + '</strong></p><button data-remove="' + item.id + '">Remove</button></article>').join("")
+    ? cart.map(item => '<article class="card"><h3>' + item.name + '</h3><p>' + money(item.price, item.currency) + ' × <strong>' + item.qty + '</strong></p><div class="quantity-controls"><button type="button" data-dec="' + item.id + '" aria-label="Decrease ' + item.name + ' quantity">−</button><span>' + item.qty + '</span><button type="button" data-inc="' + item.id + '" aria-label="Increase ' + item.name + ' quantity">+</button><button type="button" data-remove="' + item.id + '">Remove</button></div></article>').join("")
     : "<p>Your cart is empty.</p>";
-  root.querySelectorAll("[data-remove]").forEach(button => {
-    button.addEventListener("click", () => {
-      cart = cart.filter(item => item.id !== button.dataset.remove);
-      saveCart();
-    });
-  });
+
+  root.querySelectorAll("[data-dec]").forEach(button => button.addEventListener("click", () => changeQty(button.dataset.dec, -1)));
+  root.querySelectorAll("[data-inc]").forEach(button => button.addEventListener("click", () => changeQty(button.dataset.inc, 1)));
+  root.querySelectorAll("[data-remove]").forEach(button => button.addEventListener("click", () => {
+    cart = cart.filter(item => item.id !== button.dataset.remove);
+    saveCart();
+  }));
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(entry => entry.id === id);
+  if (!item) return;
+  item.qty = Math.max(0, Math.min(item.qty + delta, Number(item.stock) || 0));
+  if (item.qty === 0) cart = cart.filter(entry => entry.id !== id);
+  saveCart();
 }
 
 function addToCart(product) {
-  if (!product || product.stock < 1) return;
+  if (!product || Number(product.stock) < 1) return;
   const found = cart.find(item => item.id === product.id);
-  if (found) found.qty = Math.min(found.qty + 1, product.stock);
+  if (found) found.qty = Math.min(found.qty + 1, Number(product.stock));
   else cart.push({ ...product, qty: 1 });
   saveCart();
 }
 
 function renderCatalog() {
   const root = document.querySelector("#product-grid");
+  if (!root) return;
   const query = (document.querySelector("#search")?.value || "").toLowerCase();
   const category = document.querySelector("#category")?.value || "";
   const items = catalog.filter(product =>
@@ -45,7 +55,7 @@ function renderCatalog() {
     '<article class="card"><h3>' + product.name + '</h3><p class="muted">' +
     product.category + ' · Stock ' + product.stock + '</p><p class="price">' +
     money(product.price, product.currency) + '</p><button data-add="' + product.id + '" ' +
-    (product.stock < 1 ? "disabled" : "") + '>Add to cart</button></article>'
+    (Number(product.stock) < 1 ? "disabled" : "") + '>Add to cart</button></article>'
   ).join("") || "<p>No matching products.</p>";
   root.querySelectorAll("[data-add]").forEach(button => {
     button.addEventListener("click", () => addToCart(catalog.find(p => p.id === button.dataset.add)));
@@ -54,13 +64,16 @@ function renderCatalog() {
 
 async function load() {
   const root = document.querySelector("#product-grid");
+  if (!root) return;
   root.textContent = "Loading…";
   try {
-    const response = await fetch("/api/products");
+    const response = await fetch("/api/products", { headers: { Accept: "application/json" } });
     if (!response.ok) throw new Error("API " + response.status);
-    catalog = await response.json();
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error("Invalid catalog");
+    catalog = data.filter(product => product && product.active !== false);
     const select = document.querySelector("#category");
-    const categories = [...new Set(catalog.map(product => product.category))].sort();
+    const categories = [...new Set(catalog.map(product => product.category).filter(Boolean))].sort();
     if (select) {
       select.innerHTML = '<option value="">All categories</option>';
       categories.forEach(category => {
@@ -106,7 +119,7 @@ if (aiForm) {
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ message })
       });
       const data = await response.json().catch(() => ({}));
