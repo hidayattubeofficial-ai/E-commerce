@@ -19,3 +19,20 @@ Production deployment is intentionally disabled until human approval.
 ## Goal
 
 Build an independent FM marketplace using reusable open-source foundations, with storefront, CMS, commerce, seller tools, AI automation, testing and Cloudflare-ready deployment.
+
+## Recommended workspace tooling
+
+Keep Google Workspace Marketplace integrations optional and use them only where they reduce real work.
+
+- **Canva** — brand assets, banners and presentation/design work.
+- **Google Colab** — isolated Python/AI experiments and data processing.
+- **draw.io** — architecture, ERD and workflow diagrams.
+- **CloudConvert** — media/document format conversion when required.
+- **Photopea** — PSD/XCF and browser-based image editing.
+- **GPT Workspace** — optional Google Workspace AI assistance.
+
+### Integration rule
+
+These tools are supporting utilities, not core runtime dependencies. The core FM E-commerce application remains independent and GitHub-controlled. Do not add a Marketplace app as a production dependency unless the integration is explicitly needed, documented, tested and reversible.
+
+Production deployment remains human-approved.
