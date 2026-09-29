@@ -25,10 +25,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install EmDash dependencies
+        run: npm install
       - name: Verify FM catalog bridge
         run: node tests/catalog-bridge.test.mjs
-      - name: Verify scaffold configuration
-        run: node -e "const p=require('./package.json'); if(!p.emdash || !p.emdash.seed) process.exit(1); console.log('EmDash config OK')"
+      - name: Typecheck Astro + EmDash
+        run: npm run typecheck
+      - name: Build Astro + Cloudflare worker
+        run: npm run build
 
 # Deliberately no deployment step.
 # Production deployment remains human-approved and OFF.
