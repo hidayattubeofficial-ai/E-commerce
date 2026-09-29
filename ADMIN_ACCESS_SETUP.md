@@ -1,11 +1,13 @@
 # FM E-commerce — Admin Access Setup
 
 ## Target
-Protect /admin and /api/admin/* with Cloudflare Access before enabling any write operation.
+Protect /admin/* and /api/admin/* with Cloudflare Access before enabling write operations.
 
-## Current repository state
+## Current state
 - Admin API middleware: fail-closed
-- Authentication provider: Cloudflare Access (target)
+- Admin role guard: enabled
+- Trusted role mapping contract: enabled
+- Persistent audit storage: not enabled
 - Product writes: OFF
 - Inventory writes: OFF
 - Order mutations: OFF
@@ -13,19 +15,17 @@ Protect /admin and /api/admin/* with Cloudflare Access before enabling any write
 - Production deployment: OFF
 - Human approval: ON
 
-## Cloudflare Access checklist
-1. Create a Zero Trust Access application for the future production hostname.
-2. Protect the /admin/* path.
-3. Protect /api/admin/*.
-4. Create an allow policy for the intended administrator identity.
-5. Require an authenticated session.
-6. Keep write endpoints disabled until the policy is tested.
-7. Verify unauthenticated API requests return HTTP 401.
-8. Verify an authenticated administrator can reach read-only admin APIs.
-9. Record the Access application/policy identifiers in deployment secrets or protected configuration, never in frontend code.
+## Trusted identity flow
+1. Cloudflare Access authenticates the administrator.
+2. The trusted edge/server boundary validates the Access identity/JWT.
+3. That trusted boundary maps the authenticated identity to the configured administrator role.
+4. Admin write endpoints check the trusted role before performing mutations.
+5. Audit logging records the action without secrets.
 
-## Security note
-This repository does not claim that Cloudflare Access is configured. The configuration must be completed in the Cloudflare dashboard for the actual production hostname.
+The repository does not treat a browser-controlled role header as proof of authorization. The role header is only an internal contract between trusted layers.
+
+## Configuration
+The intended administrator role can be supplied as protected runtime configuration (FM_ADMIN_ROLE). Do not expose it in frontend code.
 
 ## Approval gate
-Do not enable production deployment, payment processing, or write-capable admin endpoints as part of this setup.
+Do not enable production deployment, payments, or write endpoints merely by completing this documentation/configuration step.
