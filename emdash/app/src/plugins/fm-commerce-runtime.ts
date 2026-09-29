@@ -1,7 +1,8 @@
 import { definePlugin } from "emdash";
 import products from "../../../../data/products.json";
 
-export default definePlugin({
+export function createPlugin() {
+  return definePlugin({
   id: "fm-commerce",
   version: "0.1.0",
   routes: {
@@ -36,4 +37,5 @@ export default definePlugin({
       })
     }
   }
-});
+  });
+}
