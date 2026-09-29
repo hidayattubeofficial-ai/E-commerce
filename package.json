@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/catalog.test.js && node tests/api-contract.test.js"
+    "test": "node tests/catalog.test.js && node tests/api-contract.test.js && node tests/config.test.js"
   }
 }
