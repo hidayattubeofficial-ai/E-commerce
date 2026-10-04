@@ -1,19 +1,19 @@
 {
-  "name": "FM E-commerce",
-  "brand": "FM",
+  "name": "Hidayat E-commerce",
+  "brand": "Hidayat",
   "mode": "foundation",
   "approvalGate": true,
   "deploy": false,
   "commands": {
-    "FM:INIT": "initialize",
-    "FM:UI": "storefront",
-    "FM:CMS": "cms",
-    "FM:SHOP": "commerce",
-    "FM:SELL": "seller",
-    "FM:AI": "ai",
-    "FM:TEST": "test",
-    "FM:FIX": "fix",
-    "FM:BUILD": "build",
-    "FM:DEPLOY": "approval-required"
+    "H:INIT": "initialize",
+    "H:UI": "storefront",
+    "H:CMS": "cms",
+    "H:SHOP": "commerce",
+    "H:SELL": "seller",
+    "H:AI": "ai",
+    "H:TEST": "test",
+    "H:FIX": "fix",
+    "H:BUILD": "build",
+    "H:DEPLOY": "approval-required"
   }
 }
