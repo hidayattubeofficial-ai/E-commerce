@@ -1,4 +1,4 @@
-# FM E-commerce
+# Hidayat E-commerce
 
 Standalone FM marketplace foundation.
 
@@ -7,7 +7,7 @@ Standalone FM marketplace foundation.
 - Responsive storefront with catalog search/filter
 - Local cart with stock-limited quantity controls
 - Server-side catalog API
-- Server-side FM AI shopping assistant
+- Server-side Hidayat AI shopping assistant
 - Read-only admin Products, Inventory and Orders surfaces
 - Health endpoint
 - Security response headers
@@ -17,11 +17,11 @@ Standalone FM marketplace foundation.
 
 ## Automation
 
-GitHub Actions runs the FM short-code automation system.
+GitHub Actions runs the Hidayat short-code automation system.
 
 Short commands:
 
-`FM:INIT` · `FM:UI` · `FM:CMS` · `FM:SHOP` · `FM:SELL` · `FM:AI` · `FM:TEST` · `FM:FIX` · `FM:BUILD` · `FM:DEPLOY`
+`H:INIT` · `H:UI` · `H:CMS` · `H:SHOP` · `H:SELL` · `H:AI` · `H:TEST` · `H:FIX` · `H:BUILD` · `H:DEPLOY`
 
 AI planning can use the repository secret `OPENAI_API_KEY`; secrets remain server-side.
 
@@ -45,7 +45,7 @@ No storefront code should bypass these gates.
 
 Optional tools such as Canva, Google Colab, draw.io, CloudConvert, Photopea and GPT Workspace remain supporting utilities rather than core runtime dependencies.
 
-## FM AI
+## Hidayat AI
 
 The storefront calls `/api/ai`. The API reads the active catalog server-side and keeps the OpenAI API key out of the browser. AI responses must not invent catalog, order, payment, seller, shipping or delivery facts.
 
