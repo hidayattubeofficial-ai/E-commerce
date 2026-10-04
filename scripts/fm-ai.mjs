@@ -1,10 +1,10 @@
 import fs from "node:fs";
 
-const cmd = process.argv[2] || "FM:TEST";
+const cmd = process.argv[2] || "H:TEST";
 const key = process.env.OPENAI_API_KEY;
 
 if (!key) {
-  console.log("FM AI: OPENAI_API_KEY not configured; fast local mode.");
+  console.log("Hidayat AI: OPENAI_API_KEY not configured; fast local mode.");
   process.exit(0);
 }
 
@@ -13,7 +13,7 @@ const body = {
   input: [
     {
       role: "system",
-      content: "You are FM E-commerce build planner. Return concise, actionable steps only. Never deploy or publish. Respect human approval."
+      content: "You are Hidayat E-commerce build planner. Return concise, actionable steps only. Never deploy or publish. Respect human approval."
     },
     {
       role: "user",
@@ -32,12 +32,12 @@ const res = await fetch("https://api.openai.com/v1/responses", {
 });
 
 if (!res.ok) {
-  console.error("FM AI request failed:", res.status);
+  console.error("Hidayat AI request failed:", res.status);
   process.exit(1);
 }
 
 const data = await res.json();
 const text = data.output_text || JSON.stringify(data);
 fs.mkdirSync("automation", { recursive: true });
-fs.writeFileSync("automation/ai-plan.md", `# FM AI Plan\n\nCommand: ${cmd}\n\n${text}\n`);
+fs.writeFileSync("automation/ai-plan.md", `# Hidayat AI Plan\n\nCommand: ${cmd}\n\n${text}\n`);
 console.log(text);
