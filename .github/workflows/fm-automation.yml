@@ -1,4 +1,4 @@
-name: FM E-commerce Automation
+name: Hidayat E-commerce Automation
 
 on:
   push:
@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       cmd:
-        description: "FM short command"
+        description: "Hidayat short command"
         required: false
-        default: "FM:TEST"
+        default: "H:TEST"
         type: string
       ai:
         description: "Use AI planning when OPENAI_API_KEY is configured"
@@ -20,7 +20,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fm-automation-main
+  group: hidayat-automation-main
   cancel-in-progress: true
 
 jobs:
@@ -38,18 +38,18 @@ jobs:
 
       - name: Run FM command
         env:
-          FM_CMD: ${{ inputs.cmd || 'FM:TEST' }}
+          HIDAYAT_CMD: ${{ inputs.cmd || 'H:TEST' }}
         run: |
           chmod +x scripts/fm.sh
-          ./scripts/fm.sh "$FM_CMD"
+          ./scripts/fm.sh "$HIDAYAT_CMD"
 
       - name: AI plan
         if: ${{ inputs.ai == true && secrets.OPENAI_API_KEY != '' }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          FM_CMD: ${{ inputs.cmd || 'FM:TEST' }}
+          HIDAYAT_CMD: ${{ inputs.cmd || 'H:TEST' }}
         run: |
-          node scripts/fm-ai.mjs "$FM_CMD"
+          node scripts/fm-ai.mjs "$HIDAYAT_CMD"
 
       - name: Fast validation
         run: |
@@ -60,6 +60,6 @@ jobs:
       - name: Commit automation state
         if: ${{ github.event_name == 'push' }}
         run: |
-          git config user.name "FM Automation"
+          git config user.name "Hidayat Automation"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git status --short
